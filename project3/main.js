@@ -1,486 +1,404 @@
-const $ = document.querySelector.bind(document);
-const $$ = document.querySelectorAll.bind(document);
-const PLAYER_STORAGE_KEY = 'SPOTIFO';
+document.addEventListener("DOMContentLoaded", function () {
+    const colRight = document.querySelector("#col_right .content_right");
 
+    function createEmployeeList() {
+        colRight.innerHTML = `
+            <div class="header_right">
+                <h2>Quản lý nhân viên</h2>
+                <button class="btn_add">
+                    <i class="fa-solid fa-plus"></i> Thêm nhân viên
+                </button>
+            </div>
 
+            <div class="search_bar">
+                <input type="text" id="search" placeholder="Tìm kiếm nhân viên..." autocomplete="off">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
 
+            <div class="table_container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tên</th>
+                            <th>Ngày sinh</th>
+                            <th>Giới tính</th>
+                            <th>SĐT</th>
+                            <th>Địa chỉ</th>
+                            <th>Chức vụ</th>
+                            <th>Email</th>
+                            <th>Trạng thái</th>
+                            <th>Ngày vào làm</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Nguyễn Văn A</td>
+                            <td>12/05/1990</td>
+                            <td>Nam</td>
+                            <td>0987654321</td>
+                            <td>Hà Nội</td>
+                            <td>Nhân viên</td>
+                            <td>nva@email.com</td>
+                            <td>Đang làm</td>
+                            <td>01/02/2020</td>
+                            <td>
+                                <button class="btn_edit"><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn_delete"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Trần Thị B</td>
+                            <td>22/09/1985</td>
+                            <td>Nữ</td>
+                            <td>0912345678</td>
+                            <td>TP.HCM</td>
+                            <td>Quản lý</td>
+                            <td>ttb@email.com</td>
+                            <td>Đang làm</td>
+                            <td>15/06/2018</td>
+                            <td>
+                                <button class="btn_edit"><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn_delete"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `;
+    }
 
-const avatar = $('.avatar_sing');
-const heading = $('.text_music');
-const sing = $('.singer');
-const audio = $('#audio');
+    function createJobList() {
+        colRight.innerHTML = `
+            <div class="header_right">
+                <h2>Danh sách công việc</h2>
+                <button class="btn_add">
+                    <i class="fa-solid fa-plus"></i> Thêm công việc
+                </button>
+            </div>
+    
+            <div class="search_bar">
+                <input type="text" id="search" placeholder="Tìm kiếm công việc..." autocomplete="off">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+    
+            <div class="table_container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tên công việc</th>
+                            <th>Mô tả</th>
+                            <th>Ngày giao</th>
+                            <th>Hạn hoàn thành</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cắt tỉa cây xanh</td>
+                            <td>Chăm sóc, cắt tỉa các cây lớn trong công viên.</td>
+                            <td>01/02/2024</td>
+                            <td>10/02/2024</td>
+                            <td><span class="status in-progress">Đang thực hiện</span></td>
+                            <td>
+                                <button class="btn_edit"><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn_delete"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tưới cây định kỳ</td>
+                            <td>Đảm bảo cây xanh được tưới đủ nước mỗi ngày.</td>
+                            <td>05/02/2024</td>
+                            <td>05/03/2024</td>
+                            <td><span class="status completed">Hoàn thành</span></td>
+                            <td>
+                                <button class="btn_edit"><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn_delete"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Kiểm tra sâu bệnh</td>
+                            <td>Phát hiện và xử lý sâu bệnh trên cây.</td>
+                            <td>10/02/2024</td>
+                            <td>20/02/2024</td>
+                            <td><span class="status overdue">Quá hạn</span></td>
+                            <td>
+                                <button class="btn_edit"><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn_delete"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `;
+    }
 
+    function createAttendanceList() {
+        colRight.innerHTML = `
+            <div class="header_right">
+                <h2>Chấm công nhân viên</h2>
+                <button class="btn_add">
+                    <i class="fa-solid fa-plus"></i> Thêm chấm công
+                </button>
+            </div>
 
-const playlist = $('.list-song');
-const playBtn = $('.player_control_playpause');
-const progress = $('#progress');
-const nextBtn = $('.nextBtn');
-const preBtn = $('.preBtn');
-const randomBtn = $('.icon_random');
-const repeatBtn = $('.icon_repeat');
-const iconRandom = $('.random');
-const iconRepeat = $('.repeat');
+            <div class="search_bar">
+                <input type="text" id="search" placeholder="Tìm kiếm nhân viên..." autocomplete="off">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
 
-const durationMusic = $('.vd-duration');
-const endMusic = $('.elapsed_end')
-const startMusic = $('.elapsed_start');
+            <div class="table_container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tên nhân viên</th>
+                            <th>Ngày làm việc</th>
+                            <th>Giờ vào</th>
+                            <th>Giờ ra</th>
+                            <th>Tổng giờ</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendance_list">
+                        <tr>
+                            <td>Nguyễn Văn A</td>
+                            <td>25/02/2025</td>
+                            <td>08:00</td>
+                            <td>17:00</td>
+                            <td>9 giờ</td>
+                            <td>
+                                <button class="btn_edit"><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn_delete"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Trần Thị B</td>
+                            <td>25/02/2025</td>
+                            <td>09:00</td>
+                            <td>18:00</td>
+                            <td>9 giờ</td>
+                            <td>
+                                <button class="btn_edit"><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn_delete"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `;
+    }
+    function createSalaryList() {
+        colRight.innerHTML = `
+            <div class="header_right">
+                <h2>Bảng lương nhân viên</h2>
+                <button class="btn_add">
+                    <i class="fa-solid fa-plus"></i> Thêm lương
+                </button>
+            </div>
 
-const changeBtn = $('.btn-change');
+            <div class="search_bar">
+                <input type="text" id="search" placeholder="Tìm kiếm nhân viên..." autocomplete="off">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
 
+            <div class="table_container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tên nhân viên</th>
+                            <th>Tháng</th>
+                            <th>Năm</th>
+                            <th>Tổng giờ làm</th>
+                            <th>Lương cơ bản</th>
+                            <th>Phụ cấp</th>
+                            <th>Khấu trừ</th>
+                            <th>Tổng lương</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="salary_list">
+                        <tr>
+                            <td>Nguyễn Văn A</td>
+                            <td>02</td>
+                            <td>2025</td>
+                            <td>180 giờ</td>
+                            <td>10,000,000 VND</td>
+                            <td>1,000,000 VND</td>
+                            <td>500,000 VND</td>
+                            <td>10,500,000 VND</td>
+                            <td>
+                                <button class="btn_edit"><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn_delete"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Trần Thị B</td>
+                            <td>02</td>
+                            <td>2025</td>
+                            <td>160 giờ</td>
+                            <td>12,000,000 VND</td>
+                            <td>800,000 VND</td>
+                            <td>600,000 VND</td>
+                            <td>12,200,000 VND</td>
+                            <td>
+                                <button class="btn_edit"><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn_delete"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `;
+    }
+    function createContractList() {
+        colRight.innerHTML = `
+            <div class="header_right">
+                <h2>Danh sách hợp đồng</h2>
+                <button class="btn_add">
+                    <i class="fa-solid fa-plus"></i> Thêm hợp đồng
+                </button>
+            </div>
 
+            <div class="search_bar">
+                <input type="text" id="search" placeholder="Tìm kiếm nhân viên..." autocomplete="off">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
 
+            <div class="table_container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tên nhân viên</th>
+                            <th>Loại hợp đồng</th>
+                            <th>Ngày bắt đầu</th>
+                            <th>Ngày kết thúc</th>
+                            <th>Email</th>
+                            <th>Lương cơ bản</th>
+                            <th>Phụ cấp</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="contract_list">
+                        <tr>
+                            <td>Nguyễn Văn A</td>
+                            <td>Hợp đồng 1 năm</td>
+                            <td>01/01/2023</td>
+                            <td>01/01/2024</td>
+                            <td>nva@email.com</td>
+                            <td>10,000,000 VND</td>
+                            <td>1,000,000 VND</td>
+                            <td>
+                                <button class="btn_edit"><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn_delete"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Trần Thị B</td>
+                            <td>Hợp đồng vô thời hạn</td>
+                            <td>15/06/2018</td>
+                            <td>-</td>
+                            <td>ttb@email.com</td>
+                            <td>12,000,000 VND</td>
+                            <td>800,000 VND</td>
+                            <td>
+                                <button class="btn_edit"><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn_delete"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `;
+    }
+    function createAssignmentList() {
+        colRight.innerHTML = `
+            <div class="header_right">
+                <h2>Danh sách phân công công việc</h2>
+                <button class="btn_add">
+                    <i class="fa-solid fa-plus"></i> Thêm phân công
+                </button>
+            </div>
+    
+            <div class="search_bar">
+                <input type="text" id="search" placeholder="Tìm kiếm nhân viên..." autocomplete="off">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+    
+            <div class="table_container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tên nhân viên</th>
+                            <th>Công việc</th>
+                            <th>Ngày bắt đầu</th>
+                            <th>Ngày kết thúc</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="assignment_list">
+                        <tr>
+                            <td>Nguyễn Văn A</td>
+                            <td>Cắt tỉa cây xanh</td>
+                            <td>01/03/2024</td>
+                            <td>10/03/2024</td>
+                            <td>
+                                <button class="btn_edit"><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn_delete"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Trần Thị B</td>
+                            <td>Tưới cây định kỳ</td>
+                            <td>05/03/2024</td>
+                            <td>15/03/2024</td>
+                            <td>
+                                <button class="btn_edit"><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn_delete"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Lê Văn C</td>
+                            <td>Kiểm tra sâu bệnh</td>
+                            <td>10/03/2024</td>
+                            <td>20/03/2024</td>
+                            <td>
+                                <button class="btn_edit"><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn_delete"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `;
+    }
 
+    createEmployeeList();
 
-
-
-
-audio.addEventListener("timeupdate", (e) => {
-    const currentTime = e.target.currentTime;
-    const duration = e.target.duration;
-    let progressWidth = (currentTime / duration) * 100;
-    audio.addEventListener("loadeddata", () => {
-        let mainAdDuration = audio.duration;
-        let totalMin = Math.floor(mainAdDuration / 60);
-        let totalSec = Math.floor(mainAdDuration % 60);
-        if (totalSec < 10) {
-            totalSec = `0${totalSec}`;
-        }
-        endMusic.innerText = `${totalMin}:${totalSec}`;
+    document.querySelector(".ul_listmusic .relative:nth-child(1)").addEventListener("click", function (event) {
+        event.preventDefault();
+        createEmployeeList();
     });
-    let currentMin = Math.floor(currentTime / 60);
-    let currentSec = Math.floor(currentTime % 60);
-    if (currentSec < 10) {
-        currentSec = `0${currentSec}`;
-    }
-    startMusic.innerText = `${currentMin}:${currentSec}`;
+
+    document.querySelector(".ul_listmusic .relative:nth-child(2)").addEventListener("click", function (event) {
+        event.preventDefault();
+        createJobList();
+    });
+    document.querySelector(".ul_listmusic .relative:nth-child(3)").addEventListener("click", function (event) {
+        event.preventDefault();
+        createAttendanceList();
+    });
+    document.querySelector(".ul_listmusic .relative:nth-child(4)").addEventListener("click", function (event) {
+        event.preventDefault();
+        createSalaryList();
+    });
+    document.querySelector(".ul_listmusic .relative:nth-child(5)").addEventListener("click", function (event) {
+        event.preventDefault();
+        createContractList();
+    });
+    document.querySelector(".ul_listmusic .relative:nth-child(6)").addEventListener("click", function (event) {
+        event.preventDefault();
+        createAssignmentList();
+    });
 });
-
-
-
-
-
-const app = {
-    currentIndex: 0,
-    isPlaying: false,
-    isRandom: false,
-    isRepeat: false,
-    config:JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY)) || {},
-    settCongif: function(key, value){
-        this.config[key] = value;
-        localStorage.setItem(PLAYER_STORAGE_KEY, JSON.stringify(this.config));
-    },
-    songs: [
-        {
-            id: 1,
-            name:'Luôn Yêu Đời',
-            singer: 'Đen, Cheng',
-            path: './music/song1.mp4',
-            album: 'Luôn Yêu Đời',
-            image: './img-song/song1.jpg',
-            addDay: '1 ngày trước',
-        },
-        {
-            id: 2,
-            name:'Bạn Đời',
-            singer: 'Karik, Gducky',
-            path: './music/song2.mp4',
-            album: 'Bạn Đời',
-            image: './img-song/song2.jpg',
-            addDay: '1 ngày trước',
-        },
-        {
-            id: 3,
-            name:'Anh Luôn Như Vậy',
-            singer: 'B Ray',
-            path: './music/song3.mp4',
-            album: 'Anh Luôn Như Vậy',
-            image: './img-song/song3.jpg',
-            addDay: '1 ngày trước',
-        },
-        {
-            id: 4,
-            name:'Xích Thêm Chút',
-            singer: 'Rapital, Groovie Lã Thắng, Tlinh, RPT MCK',
-            path: './music/song4.mp4',
-            album: 'Rapitalove',
-            image: './img-song/song4.jpg',
-            addDay: '1 ngày trước',
-        },
-        {
-            id: 5,
-            name:'Buồn Hay Vui',
-            singer: 'VSOUL, MCK, Obito, Ronboogz, Boyzed',
-            path: './music/song5.mp4',
-            album: 'Buồn Hay Vui',
-            image: './img-song/song5.jpg',
-            addDay: '1 ngày trước',
-        },
-        {
-            id: 6,
-            name:'Mamma Mia',
-            singer: 'HIEUTHUHAI, HURRYKNG, MANBO',
-            path: './music/song6.mp4',
-            album: 'Mamma Mia',
-            image: './img-song/song6.jpg',
-            addDay: '1 ngày trước',
-        },
-        {
-            id: 7,
-            name:'Có Lẽ Quá Khó Để Quên Một Người',
-            singer: '1nG ft Nam Lee n’ Dblue',
-            path: './music/song7.mp4',
-            album: 'Luôn Yêu Đời',
-            image: './img-song/song7.jpg',
-            addDay: '1 ngày trước',
-        },
-        {
-            id: 8,
-            name:'INDOCTRINATED ',
-            singer: 'GDUCKY',
-            path: './music/song8.mp4',
-            album: 'G,s',
-            image: './img-song/song8.jpg',
-            addDay: '1 ngày trước',
-        },
-        {
-            id: 9,
-            name:'Không Phải Gu',
-            singer: 'HIEUTHUHAI',
-            path: './music/song9.mp4',
-            album: 'Ai Cũng Phải Bắt Đầu Từ Đâu Đó',
-            image: './img-song/song9.jpg',
-            addDay: '1 ngày trước',
-        },
-        {
-            id: 10,
-            name:'Anh Đã Ổn Hơn',
-            singer: 'MCK',
-            path: './music/song10.mp4',
-            album: '99%',
-            image: './img-song/song10.jpg',
-            addDay: '1 ngày trước',
-        }
-    ],
-   
-
-    render: function(){
-      
-        //     return `
-            
-        //     <div class="ul-list " data-index="${index}">
-        //         <div class="li-list ${index === this.currentIndex ? 'active' : ''} ">
-        //             <div class="list number_list">
-        //                 <i class="fa-solid fa-pause list-pause" style="color: #ebecf0;"></i>
-        //                 <i class="fa-solid fa-play list-play" style="color: #ebecf0;"></i>
-        //                 <span>${++index}</span>
-        //             </div>
-        //             <!-- tiểu đề -->
-        //             <div class="list list_distance">
-        //                 <div class="list_avatar color_bg">
-        //                     <img src="${song.image}" alt="">
-        //                 </div>
-        //                 <div class="desc_list">
-        //                     <a href="" class="
-        //                     name_song">${song.name}</a>
-        //                     <div class="name_sing sub-title">
-        //                         <a href="">${song.singer}</a>
-        //                         <a href=""></a>
-        //                     </div>
-        //                 </div>
-        //             </div>
-        //             <!-- album -->
-        //             <div class="list list_album">
-        //                 <div class="desc_listablum sub-title">
-        //                     <a href="">${song.album}</a>
-        //                 </div>
-        //             </div>
-        //             <!-- time -->
-        //             <div class="list list_addsong">
-        //                 <div class="day_add sub-title">
-        //                     <a>${song.addDay}</a>
-        //                 </div>
-        //             </div>
-        //             <!-- video duration -->
-        //             <div class="list list_video">
-        //                 <div class="desc-duration sub-title">
-        //                     <i class="fa-solid fa-heart" style="color: #1ed760;"></i>
-        //                     <a href="" class="vd-duration${song.id}"></a>
-        //                 </div>
-        //               <audio id="audio${song.id}"  src="${song.path}"></audio>
-                     
-                        
-        //             </div>
-        //         </div>
-              
-               
-        //     </div>
-        //     `
-        // })
-        // playlist.innerHTML = htmls.join('\n');
-        // const itemAudio = $(`#audio${song.id}`)
-        // const fdskfjdks =  $(`vd-duration${song.id}`)
-        // itemAudio.addEventListener("loadeddata", () => {
-        //     let mainAdDuration = itemAudio.duration;
-        //     let totalMin = Math.floor(mainAdDuration / 60);
-        //     let totalSec = Math.floor(mainAdDuration % 60);
-        //     if (totalSec < 10) {
-        //         totalSec = `0${totalSec}`;
-        //     }
-            
-        //     fdskfjdks.innerText = `${totalMin}:${totalSec}`;
-        // });
-        this.songs.forEach((song,index) => {
-            const liItem = 
-             `
-                <div class="ul-list ${index === this.currentIndex ? 'active' : ''} " data-index="${index}">
-                    <div class="li-list ">
-                        <div class="list number_list">
-                            <i class="fa-solid fa-pause list-pause" style="color: #ebecf0;"></i>
-                            <i class="fa-solid fa-play list-play" style="color: #ebecf0;"></i>
-                            <span>${++index}</span>
-                        </div>
-                        <!-- tiểu đề -->
-                        <div class="list list_distance">
-                            <div class="list_avatar color_bg">
-                                <img src="${song.image}" alt="">
-                            </div>
-                            <div class="desc_list">
-                                <a href="" class="
-                                name_song">${song.name}</a>
-                                <div class="name_sing sub-title">
-                                    <a href="">${song.singer}</a>
-                                    <a href=""></a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- album -->
-                        <div class="list list_album">
-                            <div class="desc_listablum sub-title">
-                                <a href="">${song.album}</a>
-                            </div>
-                        </div>
-                        <!-- time -->
-                        <div class="list list_addsong">
-                            <div class="day_add sub-title">
-                                <a>${song.addDay}</a>
-                            </div>
-                        </div>
-                        <!-- video duration -->
-                        <div class="list list_video">
-                            <div class="desc-duration sub-title">
-                                <i class="fa-solid fa-heart" style="color: #1ed760;"></i>
-                                <a href="" class="vd-duration${song.id}"></a>
-                            </div>
-                          <audio id="audio${song.id}"  src="${song.path}"></audio>
-                         
-                            
-                        </div>
-                    </div>
-                </div>
-                `
-            playlist.insertAdjacentHTML("beforeend", liItem);
-                  const itemAudio = $(`#audio${song.id}`)
-                  const timeListAudio =  $(`.vd-duration${song.id}`)
-                  itemAudio.addEventListener("loadeddata", () => {
-            let mainAdDuration = itemAudio.duration;
-            let totalMin = Math.floor(mainAdDuration / 60);
-            let totalSec = Math.floor(mainAdDuration % 60);
-            if (totalSec < 10) {
-                totalSec = `0${totalSec}`;
-            }
-            
-            timeListAudio.innerText = `${totalMin}:${totalSec}`;
-        });
-        });
-        
-
-       
-    },
-    
-    handleEvents: function(){
-        const _this = this;
-        
-
-        // xử lý khi play
-        playBtn.onclick = function(){
-            if(app.isPlaying){
-                audio.pause();
-
-            }else{
-                audio.play();
-            }
-        }
-        // khi bài hát chạy
-        audio.onplay = function(){
-            app.isPlaying = true;
-            playBtn.classList.add('playing');
-
-        }
-        audio.onpause = function(){
-            app.isPlaying = false;
-            playBtn.classList.remove('playing');
-            
-        }
-      
-
-        // thay đổi thời gian theo nhạc
-        audio.ontimeupdate = function(){
-            if(audio.duration){
-                const progressPercent = Math.floor(audio.currentTime / audio.duration *100);
-                progress.value = progressPercent;
-            }
-        }
-
-        // khi tua
-        progress.onchange = function(e){
-            const seekTime = audio.duration /100 *e.target.value;
-            audio.currentTime = seekTime;
-
-        }
-        // chuyển bài hát
-        nextBtn.onclick = function(){
-            if(_this.isRandom){
-                _this.playRandomSong();
-            }else{
-                app.nextSong();
-
-            }
-            audio.play()
-        }
-        // lùi lại bài hát
-        preBtn.onclick = function(){
-            if(_this.isRandom){
-                _this.playRandomSong();
-            }else{
-                app.preSong();
-            }
-            audio.play();
-        }
-
-        // random
-        randomBtn.onclick = function(e){
-            app.isRandom = !app.isRandom
-            _this.settCongif('isRandom', _this.isRandom)
-            iconRandom.classList.toggle('active', _this.isRandom);
-            _this.render()
-        }
-        // repeat
-        repeatBtn.onclick = function(e){
-            app.isRepeat = !app.isRepeat
-            _this.settCongif('isRepeat', _this.isRepeat)
-            iconRepeat.classList.toggle('active', _this.isRepeat);
-            _this.render()
-
-        }
-        audio.onended = function(){
-            if(_this.isRepeat){
-                audio.play();
-            }else{
-                nextBtn.click();
-
-            }
-        }
-       
-        // click vào playlist 
-        // chưa thêm option
-        playlist.onclick = function(e){
-            const clickSong = e.target.closest('.ul-list:not(.active)')
-            const liList = $(`.li-list`)
-            if(clickSong) {
-                _this.currentIndex = Number(clickSong.dataset.index);
-                _this.loadCurrentSong();
-                _this.render();
-                audio.play();
-                liList.classList.add('active');
-
-                
-            }
-        }
-      
-        
-
-
-
-    },
-    
-
-
-    playRandomSong: function(){
-        let newIndex;
-        do{
-            newIndex = Math.floor(Math.random() * this.songs.length);
-
-        }while(newIndex === this.currentIndex)
-        this.currentIndex = newIndex;
-        this.loadCurrentSong();
-
-    },
-    nextSong: function(){
-        this.currentIndex++;
-        if(this.currentIndex >= this.songs.length){
-            this.currentIndex = 0;
-
-        }
-        this.loadCurrentSong();
-
-    },
-    preSong: function(){
-        this.currentIndex--;
-        if(this.currentIndex < 0 ){
-            this.currentIndex = this.songs.length - 1;
-
-        }
-        this.loadCurrentSong();
-
-    },
-    loadConfig: function(){
-        this.isRandom = this.config.isRandom
-        this.isRepeat = this.config.isRepeat
-    },
-    defineProperties: function(){
-        Object.defineProperty(this, 'currentSong', {
-            get: function(){
-                return this.songs[this.currentIndex];
-            }
-        })
-    },
-    loadCurrentSong: function(){
-        
-        heading.textContent = this.currentSong.name;
-        avatar.style.backgroundImage = `url('${this.currentSong.image}')`;
-        sing.textContent = this.currentSong.singer;
-        audio.src = this.currentSong.path;
-
-    },
- 
-    
-    
-
-    start: function(){
-       
-        // xử lý sự kiện
-       this.handleEvents();
-
-       this.defineProperties();
-
-       this.loadCurrentSong();
-
-       this.loadConfig();
-
-       
-
-        
-        // reder list music
-        this.render();
-
-
-
-
-        // hiện thị config random và repeat
-      
-    }
-
-}
-
-app.start();
 

@@ -20,14 +20,22 @@ img {
     clear: both;
 }
 
+.relative {
+    position: relative;
+}
+
+.sub-ul {
+    position: absolute;
+
+}
 
 #col_left {
-    width: 5%;
+    width: 10%;
     float: left;
 }
 
 #col_right {
-    width: 95%;
+    width: 90%;
     float: right;
 }
 
@@ -38,14 +46,14 @@ img {
 
 /* start col_left */
 #header_left {
-    width: 72px;
+    width: 154px;
 
 }
 
 .header-top {
     margin: 10px 8px 12px 6px;
     /* width: 436px; */
-    height: 120px;
+    height: 75px;
     background-color: rgba(17, 17, 30, 1);
     border-radius: 10px;
 }
@@ -332,8 +340,7 @@ i.fa-solid.fa-caret-down {
 }
 
 .desc_li {
-    display: none;
-    /* display: flex; */
+    display: flex;
     flex-direction: column;
     color: #fff;
     margin-left: 16px;
@@ -359,15 +366,10 @@ i.fa-solid.fa-thumbtack {
 /* end col_left */
 
 
-/* start col_right */
-#col_right {}
-
 .content_right {
     background-color: rgba(17, 17, 30, 1);
-    /* max-width: 1062px; */
-    height: 574px;
+    height: 715px;
     border-radius: 10px;
-    /* margin-top: 50px; */
     margin-top: 12px;
     overflow-y: auto;
 }
@@ -1130,4 +1132,95 @@ font-size: 16px;
     transform: scale(1.06);
     transition: none 33ms cubic-bezier(.3, 0, 0, 1);
     transition-property: all;
+}
+
+/* Giao diện tổng thể */
+.content_right {
+    padding: 20px;
+    background: #f8f8f8;
+}
+
+/* Tiêu đề và nút thêm */
+.header_right {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.btn_add {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Thanh tìm kiếm */
+.search_bar {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 5px;
+    background: white;
+    margin-bottom: 15px;
+}
+
+.search_bar input {
+    border: none;
+    outline: none;
+    flex: 1;
+    padding: 5px;
+}
+
+.search_bar i {
+    color: gray;
+}
+
+/* Bảng danh sách nhân viên */
+.table_container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+th,
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background: #007bff;
+    color: white;
+}
+
+tr:hover {
+    background: #f1f1f1;
+}
+
+/* Nút chỉnh sửa và xóa */
+.btn_edit,
+.btn_delete {
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.btn_edit i {
+    color: #ffc107;
+}
+
+.btn_delete i {
+    color: #dc3545;
 }
